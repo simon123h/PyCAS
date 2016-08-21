@@ -9,13 +9,10 @@ git commit -m '%msg%'
 :choice
 echo.
 echo [P]ush now, [E]xit, [N]ew commit
-choice /c pen /n /d n
+choice /c pen /n
 if %errorlevel%==1 goto :push
 if %errorlevel%==2 exit
 if %errorlevel%==3 goto :newCommit
-
-set /p pushNow="Push now (P) else ? "
-if /i "%pushNow%" neq "Y" goto :newCommit
 
 
 :push
