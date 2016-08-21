@@ -1,24 +1,30 @@
 @echo off
 
+echo  -----------------------
+echo        Git Remote
+echo  -----------------------
+echo.
+
+
 :legend
-echo [N]ew commit
-echo [P]ush now
-echo [M]ore
+echo  [C]ommit now
+echo  [P]ush now
+echo  [M]ore
 goto choice
 
 
 :more
-echo [R]ecommit
-echo [U]pdate from server
-echo [S]tatus
-echo [D]ifference in files
-echo [I]nit new repo
-echo [E]xit
+echo  [R]ecommit
+echo  [U]pdate from server
+echo  [S]tatus
+echo  [D]iff
+echo  [I]nit new repo
+echo  [E]xit
 goto choice
 
 
 :choice
-choice /c npmueisdr /n /m ">>> "
+choice /c cpmueisdr /n /m "> "
 if %errorlevel%==1 goto :newCommit
 if %errorlevel%==2 goto :push
 if %errorlevel%==3 goto :more
@@ -62,6 +68,8 @@ goto startOver
 echo.
 git pull
 goto startOver
+
+:asfasa
 
 
 :init
