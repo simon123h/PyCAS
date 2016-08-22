@@ -22,24 +22,22 @@ echo  Git[K]
 echo  [R]ecommit
 echo  [I]nit new repo
 echo  [B]ranching
-echo  [E]xit
 goto choice
 
 
 :choice
-choice /c cpmueisdrbkl /n /m "> "
+choice /c cpmuisdrbkl /n /m "> "
 if %errorlevel%==1 goto :newCommit
 if %errorlevel%==2 goto :push
 if %errorlevel%==3 goto :more
 if %errorlevel%==4 goto :pull
-if %errorlevel%==5 goto :exit
-if %errorlevel%==6 goto :init
-if %errorlevel%==7 echo. & git status & goto startOver
-if %errorlevel%==8 echo. & git diff & goto startOver
-if %errorlevel%==9 goto :recommit
-if %errorlevel%==10 goto :branching
-if %errorlevel%==11 gitk & goto startOver
-if %errorlevel%==12 echo. & git log & goto startOver
+if %errorlevel%==5 goto :init
+if %errorlevel%==6 echo. & git status & goto startOver
+if %errorlevel%==7 echo. & git diff & goto startOver
+if %errorlevel%==8 goto :recommit
+if %errorlevel%==9 goto :branching
+if %errorlevel%==10 gitk & goto startOver
+if %errorlevel%==11 echo. & git log & goto startOver
 
 
 :startOver
@@ -66,7 +64,8 @@ goto startOver
 
 :push
 echo.
-git push origin master
+REM git push origin master
+git push --all -u
 goto startOver
 
 
@@ -127,5 +126,3 @@ git branch -d %name%
 goto startOver
 
 
-
-:exit
