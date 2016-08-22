@@ -51,14 +51,14 @@ goto legend
 echo.
 git add .
 set /p msg="Commit message: "
-git commit -m '%msg%'
+git commit -m "%msg%"
 goto startOver
 
 :recommit
 echo.
 git add .
 set /p msg="Commit message: "
-git commit -m '%msg%' --amend
+git commit -m "%msg%" --amend
 goto startOver
 
 
