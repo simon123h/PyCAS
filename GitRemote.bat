@@ -93,14 +93,16 @@ echo  [N]ew branch
 echo  [L]ist all
 echo  [S]witch to branch
 echo  [D]elete branch
+echo  [M]erge
 echo  [R]eturn
 
-choice /c rlnsd /n /m "> "
+choice /c rlnsdm /n /m "> "
 if %errorlevel%==1 goto :startOver
 if %errorlevel%==2 goto :listBranches
 if %errorlevel%==3 goto :newBranch
 if %errorlevel%==4 goto :switchBranch
 if %errorlevel%==5 goto :deleteBranch
+if %errorlevel%==6 goto :mergeBranch
 
 :listBranches
 echo .
@@ -109,22 +111,29 @@ goto startOver
 
 :newBranch
 echo .
-set /p name="Branch name: "
+set /p name="Create branch named: "
 git checkout -b %name%
 git push -u origin %name%
 goto startOver
 
 :switchBranch
 echo .
-set /p name="Branch name: "
+set /p name="Switch to branch named: "
 git checkout %name%
 git push -u origin %name%
 goto startOver
 
 :deleteBranch
 echo .
-set /p name="Branch name: "
+set /p name="Delete branch named: "
 git branch -d %name%
 goto startOver
+
+:mergeBranch
+echo .
+set /p name="Merge with branch named: "
+git merge %name%
+goto startOver
+
 
 
