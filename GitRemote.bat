@@ -55,6 +55,7 @@ echo.
 git add .
 set /p msg="Commit message: "
 git commit -m "%msg%"
+set msg=
 goto startOver
 
 :recommit
@@ -62,6 +63,7 @@ echo.
 git add .
 set /p msg="Commit message: "
 git commit -m "%msg%" --amend
+set msg=
 goto startOver
 
 
@@ -83,6 +85,7 @@ echo.
 git init
 set /p url="Remote server url: "
 if not "%url%" == "" git remote add origin %url%
+set url=
 goto startOver
 
 :console
@@ -125,6 +128,7 @@ echo.
 set /p name="Create branch named: "
 git checkout -b %name%
 git push -u origin %name%
+set name=
 goto startOver
 
 :switchBranch
@@ -132,18 +136,21 @@ echo.
 set /p name="Switch to branch named: "
 git checkout %name%
 git push -u origin %name%
+set name=
 goto startOver
 
 :deleteBranch
 echo.
 set /p name="Delete branch named: "
 git branch -d %name%
+set name=
 goto startOver
 
 :mergeBranch
 echo.
 set /p name="Merge with branch named: "
 git merge %name%
+set name=
 goto startOver
 
 
