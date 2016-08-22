@@ -65,7 +65,7 @@ goto startOver
 :push
 echo.
 REM git push origin master
-git push --all -u
+git push
 goto startOver
 
 
@@ -111,12 +111,14 @@ goto startOver
 echo .
 set /p name="Branch name: "
 git checkout -b %name%
+git push -u origin %name%
 goto startOver
 
 :switchBranch
 echo .
 set /p name="Branch name: "
 git checkout %name%
+git push -u origin %name%
 goto startOver
 
 :deleteBranch
