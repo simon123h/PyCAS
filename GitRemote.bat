@@ -105,32 +105,32 @@ if %errorlevel%==5 goto :deleteBranch
 if %errorlevel%==6 goto :mergeBranch
 
 :listBranches
-echo .
+echo.
 git branch -av
 goto startOver
 
 :newBranch
-echo .
+echo.
 set /p name="Create branch named: "
 git checkout -b %name%
 git push -u origin %name%
 goto startOver
 
 :switchBranch
-echo .
+echo.
 set /p name="Switch to branch named: "
 git checkout %name%
 git push -u origin %name%
 goto startOver
 
 :deleteBranch
-echo .
+echo.
 set /p name="Delete branch named: "
 git branch -d %name%
 goto startOver
 
 :mergeBranch
-echo .
+echo.
 set /p name="Merge with branch named: "
 git merge %name%
 goto startOver
