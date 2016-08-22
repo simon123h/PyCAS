@@ -1,3 +1,3 @@
 from mathexpr import *
-#from misc.Parser import *
+from patternmatching import *
 #from misc.Registry import *
