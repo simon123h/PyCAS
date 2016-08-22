@@ -22,22 +22,25 @@ echo  Git[K]
 echo  [R]ecommit
 echo  [I]nit new repo
 echo  [B]ranching
+echo  [O] CMD
 goto choice
 
 
 :choice
-choice /c cpmuisdrbkl /n /m "> "
-if %errorlevel%==1 goto :newCommit
-if %errorlevel%==2 goto :push
-if %errorlevel%==3 goto :more
-if %errorlevel%==4 goto :pull
-if %errorlevel%==5 goto :init
+choice /c cpmuisdrbklo /n /m "> "
+if %errorlevel%==1 goto newCommit
+if %errorlevel%==2 goto push
+if %errorlevel%==3 goto more
+if %errorlevel%==4 goto pull
+if %errorlevel%==5 goto init
 if %errorlevel%==6 echo. & git status & goto startOver
 if %errorlevel%==7 echo. & git diff & goto startOver
-if %errorlevel%==8 goto :recommit
-if %errorlevel%==9 goto :branching
+if %errorlevel%==8 goto recommit
+if %errorlevel%==9 goto branching
 if %errorlevel%==10 gitk & goto startOver
 if %errorlevel%==11 echo. & git log & goto startOver
+if %errorlevel%==12 goto console
+
 
 
 :startOver
@@ -82,6 +85,14 @@ set /p url="Remote server url: "
 if not "%url%" == "" git remote add origin %url%
 goto startOver
 
+:console
+echo.
+echo Console
+echo return with 'exit' command
+echo.
+cmd
+goto startOver
+
 
 
 
@@ -97,12 +108,12 @@ echo  [M]erge
 echo  [R]eturn
 
 choice /c rlnsdm /n /m "> "
-if %errorlevel%==1 goto :startOver
-if %errorlevel%==2 goto :listBranches
-if %errorlevel%==3 goto :newBranch
-if %errorlevel%==4 goto :switchBranch
-if %errorlevel%==5 goto :deleteBranch
-if %errorlevel%==6 goto :mergeBranch
+if %errorlevel%==1 goto startOver
+if %errorlevel%==2 goto listBranches
+if %errorlevel%==3 goto newBranch
+if %errorlevel%==4 goto switchBranch
+if %errorlevel%==5 goto deleteBranch
+if %errorlevel%==6 goto mergeBranch
 
 :listBranches
 echo.
