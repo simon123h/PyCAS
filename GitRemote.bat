@@ -5,6 +5,7 @@ echo         Git Remote
 echo  ------------------------
 echo.
 
+echo  [U]pdate from server
 
 :legend
 echo  [C]ommit now
@@ -108,15 +109,17 @@ echo  [L]ist all
 echo  [S]witch to branch
 echo  [D]elete branch
 echo  [M]erge
+echo  [P]ush all branches
 echo  [R]eturn
 
-choice /c rlnsdm /n /m "> "
+choice /c rlnsdmp /n /m "> "
 if %errorlevel%==1 goto startOver
 if %errorlevel%==2 goto listBranches
 if %errorlevel%==3 goto newBranch
 if %errorlevel%==4 goto switchBranch
 if %errorlevel%==5 goto deleteBranch
 if %errorlevel%==6 goto mergeBranch
+if %errorlevel%==7 echo. & git push --all -u & goto startOver
 
 :listBranches
 echo.
