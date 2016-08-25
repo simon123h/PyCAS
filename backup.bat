@@ -10,4 +10,3 @@ if exist backup.py (
 
 echo.
 pause
-pause
