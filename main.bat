@@ -1,5 +1,5 @@
 @echo off
 :start
-python -i main.py
+py -i main.py
 echo Datei neu geladen.
 GOTO start

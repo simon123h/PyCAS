@@ -1,3 +1,3 @@
 @echo off
-"D:/Sourcecode/Batch/Git Tools/GitRemote"
+"D:/Sourcecode/Python/GitRemote/Batch/BatchGitRemote"
 pause
