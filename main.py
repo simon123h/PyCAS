@@ -1,4 +1,3 @@
 #! python3
-from mathexpr import *
-#from patternmatching import *
-#from misc.Registry import *
+from mathexpr import expr, atom, elementary
+# from patternmatching import *
