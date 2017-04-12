@@ -5,9 +5,6 @@ Blaetter in der zugehoerigen Baumstruktur
 
 
 from .expr import Expression
-# TODO: muss wahrscheinlich ans Ende:
-from .specialNumbers import Zero, Infinity, NegativeInfinity
-
 
 """abstrakte Mutter-Klasse"""
 
@@ -263,3 +260,6 @@ class Var(Atom):
 
     def __str__(self):
         return self.name
+
+
+from .specialNumbers import Zero, Infinity, NegativeInfinity

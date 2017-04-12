@@ -53,3 +53,16 @@ class Wildcard(Atom):
     def __init__(self, name):
         self.name = str(name)
         super().__init__(name)
+
+    def __eq__(self, other):
+        return True
+
+    def subs(self, other):
+        return [(self, other)]
+
+    def __str__(self):
+        return "Wildcard(" + self.name + ")"
+
+    @property
+    def args(self):
+        return []

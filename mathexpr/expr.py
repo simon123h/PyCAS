@@ -4,10 +4,6 @@ Gibt alle notwendigen Methoden fuer Kind-Klassen an.
 Implementiert Methoden moeglichst allgemein.
 """
 
-# TODO: muss wahrscheinlich ans Ende:
-from .atom import Int
-from .elementary import Add, Mul, Div, Pow
-
 
 class Expression:
 
@@ -22,11 +18,6 @@ class Expression:
 
     # Klasse/Konstruktor der obersten Operation
     @property
-    def cls(self):
-        return self.__class__
-
-    # Klasse/Konstruktor der obersten Operation
-    @property
     def func(self):
         return self.__class__
 
@@ -36,20 +27,22 @@ class Expression:
         return self._args
 
     # auf strukturelle Gleichheit zu anderem Ausdruck pruefen
-    def __eq__(self, expr):
-        if self.type != expr.type:
+    def __eq__(self, other):
+        if isinstance(other, Wildcard):
+            return other == self
+        if self.type != other.type:
             return False
-        for i in range(0, len(self.args)):
-            if not self.args[i].equals(expr.args[i]):
+        if len(self.args) is not len(other.args):
+            return False
+        for arg1, arg2 in zip(self.args, other.args):
+            if not arg1 == arg2:
                 return False
         return True
 
-    # Expression var durch Expression val ersetzen
-    def set(self, var, val):
-        if self.equals(var):
-            return val
-        else:
-            return self     # TODO: rekursiv weitergeben?
+    # TODO: deprecated, remove
+    def equals(self, other):
+        print("deprecated: equals")
+        return self == other
 
     # Ausgabe
     def __str__(self):
@@ -90,3 +83,47 @@ class Expression:
 
     def __repr__(self):
         return str(self)
+
+    # # # TRS FUNCTIONALITY
+
+    # Expression var durch Expression val ersetzen
+    def set(self, var, val):
+        if self == var:
+            return val
+        else:
+            return self     # TODO: rekursiv weitergeben
+
+    # Show all recursive matches of (general) Expression other to current tree
+    # TODO: als Funktion in trs auslagern
+    def listMatches(self, other):
+        result = [self] if self == other else []
+        for arg in self.args:
+            result += arg.matches(other)
+
+    # Show all recursive matches of (general) Expression other to current tree
+    # and return self bundled with list of corresponding wildcard sustitutions
+    # TODO: als Funktion in trs auslagern
+    def match(self, other):
+        result = []
+        if self == other and not isinstance(self, Wildcard):
+            result += [(self, self.subs(other))]
+        if not isinstance(self, Atom):
+            for arg in self.args:
+                result += arg.match(other)
+        return result
+
+    # return list of all wildcard substitutions for two equal expressions
+    # TODO: als Funktion in trs auslagern
+    def subs(self, other):
+        if isinstance(other, Wildcard):
+            return other.subs(self)
+        if isinstance(self, Atom) or isinstance(other, Atom):
+            return []
+        result = []
+        for a1, a2 in zip(self.args, other.args):
+            result += a1.subs(a2)
+        return result
+
+
+from .atom import Atom, Int, Wildcard
+from .elementary import Add, Mul, Div, Pow
