@@ -1,8 +1,7 @@
-from .expr import Expression
-from .atom import Number, Num, Constant
+from .atom import Atom, Int
 
 
-class Infinity(Number):
+class Infinity(Atom):
     def __str__(self):
         return 'oo'
 
@@ -25,7 +24,7 @@ class Infinity(Number):
 Infinity = Infinity()
 
 
-class NegativeInfinity(Number):
+class NegativeInfinity(Atom):
     def __str__(self):
         return '-oo'
 
@@ -47,11 +46,8 @@ class NegativeInfinity(Number):
 
 NegativeInfinity = NegativeInfinity()
 
-# One = Num(1)
-# Zero = Num(0)
+One = Int(1)
+Zero = Int(0)
 # pi = Constant("pi", Num(3.14159265359))
 # Phi = Constant("Phi", Num(1.61803398875))
 # e = Constant("e", Num(2.71828182846))
-
-
-from .elementary import *

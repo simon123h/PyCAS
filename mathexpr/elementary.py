@@ -1,5 +1,5 @@
-
-from .expr import *
+# TODO: implementieren!
+from .expr import Expression
 
 
 class Add(Expression):
@@ -20,6 +20,3 @@ class Div(Expression):
 
 class Pow(Expression):
     pass
-
-
-from .atom import *

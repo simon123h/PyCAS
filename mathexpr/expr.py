@@ -4,6 +4,10 @@ Gibt alle notwendigen Methoden fuer Kind-Klassen an.
 Implementiert Methoden moeglichst allgemein.
 """
 
+# TODO: muss wahrscheinlich ans Ende:
+from .atom import Int
+from .elementary import Add, Mul, Div, Pow
+
 
 class Expression:
 
@@ -45,7 +49,7 @@ class Expression:
         if self.equals(var):
             return val
         else:
-            return self
+            return self     # TODO: rekursiv weitergeben?
 
     # Ausgabe
     def __str__(self):
@@ -58,7 +62,7 @@ class Expression:
 
     def __pos__(self): return self
 
-    def __neg__(self): return Mul(Integer(-1), self)
+    def __neg__(self): return Mul(Int(-1), self)
 
     def __add__(self, other): return Add(self, other)
 
@@ -80,13 +84,9 @@ class Expression:
 
     def __truediv__(self, other): return Div(self, other)
 
-    def __rtruediv__(self, other): return Mul(other, Pow(self, Integer(-1)))
+    def __rtruediv__(self, other): return Mul(other, Pow(self, Int(-1)))
     __div__ = __truediv__
     __rdiv__ = __rtruediv__
 
-    def __repr__(self): return str(self)
-    pass
-
-
-from .atom import *
-from .elementary import *
+    def __repr__(self):
+        return str(self)
