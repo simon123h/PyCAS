@@ -39,10 +39,9 @@ class Expression:
                 return False
         return True
 
-    # TODO: deprecated, remove
-    def equals(self, other):
-        print("deprecated: equals")
-        return self == other
+    # return if self is instance of cls
+    def isa(self, cls):
+        return isinstance(self, cls)
 
     # Ausgabe
     def __str__(self):
@@ -84,44 +83,27 @@ class Expression:
     def __repr__(self):
         return str(self)
 
-    # # # TRS FUNCTIONALITY
+    # Rekursiv pattern durch expr val ersetzen
+    def replace(self, pattern, expr):
+        if self == pattern and not pattern.isa(Wildcard):
+            wildcardSubs = self.require(pattern)
+            for wc, sub in wildcardSubs:
+                expr = expr.replace(wc, sub)
+            return expr
+        if self.isa(Atom):
+            return self
+        args = [arg.replace(pattern, expr) for arg in self._args]
+        return self.func(*args)
 
-    # Expression var durch Expression val ersetzen
-    def set(self, var, val):
-        if self == var:
-            return val
-        else:
-            return self     # TODO: rekursiv weitergeben
-
-    # Show all recursive matches of (general) Expression other to current tree
-    # TODO: als Funktion in trs auslagern
-    def listMatches(self, other):
-        result = [self] if self == other else []
-        for arg in self.args:
-            result += arg.matches(other)
-
-    # Show all recursive matches of (general) Expression other to current tree
-    # and return self bundled with list of corresponding wildcard sustitutions
-    # TODO: als Funktion in trs auslagern
-    def match(self, other):
-        result = []
-        if self == other and not isinstance(self, Wildcard):
-            result += [(self, self.subs(other))]
-        if not isinstance(self, Atom):
-            for arg in self.args:
-                result += arg.match(other)
-        return result
-
-    # return list of all wildcard substitutions for two equal expressions
-    # TODO: als Funktion in trs auslagern
-    def subs(self, other):
-        if isinstance(other, Wildcard):
-            return other.subs(self)
-        if isinstance(self, Atom) or isinstance(other, Atom):
+    # return list of all required wildcard substitutions for two equal expressions
+    def require(self, pattern):
+        if pattern.isa(Wildcard):
+            return pattern.require(self)
+        if self.isa(Atom) or pattern.isa(Atom):
             return []
         result = []
-        for a1, a2 in zip(self.args, other.args):
-            result += a1.subs(a2)
+        for a1, a2 in zip(self.args, pattern.args):
+            result += a1.require(a2)
         return result
 
 

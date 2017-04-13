@@ -57,12 +57,14 @@ class Wildcard(Atom):
     def __eq__(self, other):
         return True
 
-    def subs(self, other):
+    def replace(self, pattern, expr):
+        if pattern.isa(Wildcard) and self.name is pattern.name:
+            return expr
+        return self
+
+    def require(self, other):
         return [(self, other)]
 
-    def __str__(self):
-        return "Wildcard(" + self.name + ")"
-
-    @property
-    def args(self):
-        return []
+    # @property
+    # def args(self):
+    #     return []
