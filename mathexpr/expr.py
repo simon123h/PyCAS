@@ -10,6 +10,8 @@ class Expression:
     # Konstruktor
     def __init__(self, *args):
         self._args = list(args)
+        self.isAssociative = True
+        self.isCommutative = True
 
     # Typ der obersten Operation
     @property
@@ -28,7 +30,7 @@ class Expression:
 
     # auf strukturelle Gleichheit zu anderem Ausdruck pruefen
     def __eq__(self, other):
-        if isinstance(other, Wildcard):
+        if other.isa(Wildcard):
             return other == self
         if self.type != other.type:
             return False
@@ -43,6 +45,12 @@ class Expression:
     def isa(self, cls):
         return isinstance(self, cls)
 
+    # hardcoded evaluation rules serve as axiomatic rules
+    # and are executed by calling eval()
+    def eval(self):
+        args = [arg.eval() for arg in self._args]
+        return self.func(*args)
+
     # Ausgabe
     def __str__(self):
         if self.type == "Expression":
@@ -50,38 +58,52 @@ class Expression:
         return self.__class__.__name__ + "(" + ", ".join([str(arg) for arg in self.args]) + ")"
 
     # Builtin-Operatoren ueberschreiben
-    def __ne__(self, other): return not self.equals(other)
-
-    def __pos__(self): return self
-
-    def __neg__(self): return Mul(Int(-1), self)
-
-    def __add__(self, other): return Add(self, other)
-
-    def __radd__(self, other): return Add(other, self)
-
-    def __sub__(self, other): return Add(self, -other)
-
-    def __rsub__(self, other): return Add(other, -self)
-
-    def __mul__(self, other): return Mul(self, other)
-
-    def __rmul__(self, other): return Mul(other, self)
-
-    def __pow__(self, other): return Pow(self, other)
-
-    def __rpow__(self, other): return Pow(other, self)
-
-    def __xor__(self, other): return Pow(self, other)
-
-    def __truediv__(self, other): return Div(self, other)
-
-    def __rtruediv__(self, other): return Mul(other, Pow(self, Int(-1)))
-    __div__ = __truediv__
-    __rdiv__ = __rtruediv__
-
     def __repr__(self):
         return str(self)
+
+    def __ne__(self, other):
+        return not self.equals(other)
+
+    def __pos__(self):
+        return self
+
+    def __neg__(self):
+        return Mul(Int(-1), self)
+
+    def __add__(self, other):
+        return Add(self, other)
+
+    def __radd__(self, other):
+        return Add(other, self)
+
+    def __sub__(self, other):
+        return Add(self, -other)
+
+    def __rsub__(self, other):
+        return Add(other, -self)
+
+    def __mul__(self, other):
+        return Mul(self, other)
+
+    def __rmul__(self, other):
+        return Mul(other, self)
+
+    def __pow__(self, other):
+        return Pow(self, other)
+
+    def __rpow__(self, other):
+        return Pow(other, self)
+
+    def __xor__(self, other):
+        return Pow(self, other)
+
+    def __truediv__(self, other):
+        return Div(self, other)
+
+    def __rtruediv__(self, other):
+        return Div(other, self)
+    __div__ = __truediv__
+    __rdiv__ = __rtruediv__
 
     # Rekursiv pattern durch expr val ersetzen
     def replace(self, pattern, expr):
@@ -95,7 +117,8 @@ class Expression:
         args = [arg.replace(pattern, expr) for arg in self._args]
         return self.func(*args)
 
-    # return list of all required wildcard substitutions for two equal expressions
+    # return list of all required wildcard substitutions for two equal
+    # expressions
     def require(self, pattern):
         if pattern.isa(Wildcard):
             return pattern.require(self)

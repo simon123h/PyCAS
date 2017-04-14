@@ -1,4 +1,4 @@
-from .atom import Atom, Int
+from .atom import Atom, Num, Int
 
 
 class Infinity(Atom):
