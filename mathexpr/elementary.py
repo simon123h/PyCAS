@@ -3,23 +3,23 @@ from .atom import Int
 
 
 class Add(Expression):
+    isAssociative = True
+    isCommutative = True
+
     def __str__(self):
         return "+".join([arg.__str__() for arg in self.args])
 
-    # hardcoded addition rules, axiomatic for int arithmetics
-    def eval(self):
-        print("evald add")
-        if all(arg.isa(Int) for arg in self.args):
-            return Int(sum([arg.val for arg in self.args]))
-        return super().eval()
-
 
 class Sub(Expression):
+
     def __str__(self):
         return "-".join([arg.__str__() for arg in self.args])
 
 
 class Mul(Expression):
+    isAssociative = True
+    isCommutative = True
+
     def __str__(self):
         return "*".join([arg.__str__() for arg in self.args])
 

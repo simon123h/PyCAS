@@ -1,13 +1,18 @@
-from .Rule import Rule, RuleSet, RuleRegistry
+from .Rule import Rule, DeepRule, RuleSet, RuleRegistry
 from mathexpr.atom import Wildcard, Int
-from mathexpr.elementary import Div, Pow
+from mathexpr.elementary import Add, Mul, Div, Pow
 from mathexpr.specialNumbers import Zero, One, Infinity
 
 
 intAdd = RuleSet(
-    Rule(
-        Wildcard("a"),     # Fallback to hardcoded evaluation rules
-        Wildcard("a").eval()     # TODO: doesnt work!! FIX!!
+    # Fallback to hardcoded evaluation rules
+    DeepRule(
+        lambda expr: expr.args[0] if len(expr.args) == 1 else expr,
+        matchType=Add
+    ),
+    DeepRule(
+        lambda expr: Int(sum([arg.val for arg in expr.args])) if all(arg.isa(Int) for arg in expr.args) else expr,
+        matchType=Add
     ),
     Rule(
         Zero + Wildcard(),
@@ -15,11 +20,24 @@ intAdd = RuleSet(
     )
 )
 
+
+# Evaluate a product of all Ints list
+def product(factors):
+    result = 1
+    for factor in factors:
+        result *= factor
+    return result
+
+
 intMul = RuleSet(
-    Rule(
-        # Fallback to hardcoded evaluation rules
-        Wildcard("a", Int),
-        Wildcard("a").eval()
+    # Fallback to hardcoded evaluation rules
+    DeepRule(
+        lambda expr: expr.args[0] if len(expr.args) == 1 else expr,
+        matchType=Mul
+    ),
+    DeepRule(
+        lambda expr: Int(product([arg.val for arg in expr.args])) if all(arg.isa(Int) for arg in expr.args) else expr,
+        matchType=Add
     ),
     Rule(
         Zero * Wildcard(),

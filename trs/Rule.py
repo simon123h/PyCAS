@@ -1,16 +1,27 @@
 
 
 class Rule:
-    def __init__(self, lhs, rhs, definition=False):
+    def __init__(self, lhs, rhs):
         self.lhs = lhs
         self.rhs = rhs
-        self.definition = definition
 
     def invert(self):
         return Rule(self.rhs, self.lhs)
 
     def apply(self, expr):
         return expr.replace(self.lhs, self.rhs)
+
+
+class DeepRule(Rule):
+    # pass a function that is applied to an expression when applying the rule
+    def __init__(self, func, matchType=None):
+        self.func = func
+        self.matchType = matchType
+
+    def apply(self, expr):
+        if self.matchType is None or self.matchType == expr.type:
+            return self.func(expr)
+        return expr
 
 
 # a set of rules to be applied at once

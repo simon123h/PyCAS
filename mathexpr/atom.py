@@ -60,11 +60,14 @@ class Wildcard(Atom):
         self.name = str(name)
         self.matchType = matchType
         super().__init__(name)
+        self.required = None
 
     # a Wildcard matches every expression (restricted by matchType)
+    # if any requirements have been made in require, compare to them as well
     def __eq__(self, other):
         if other.isa(Expression):
-            return self.matchType is None or other.isa(self.matchType)
+            return ((self.matchType is None or other.isa(self.matchType)) and
+                    (self.required is None or other == self.required))
         return False
 
     def replace(self, pattern, expr):
@@ -73,9 +76,5 @@ class Wildcard(Atom):
         return self
 
     def require(self, other):
+        self.required = other
         return [(self, other)]
-
-    # Wildcard __eq__ overwrites standard behaviour to equal everything
-    # trueEq falls back to regular Expression __eq__
-    def trueEq(self, expr):
-        return super().__eq__(expr)
