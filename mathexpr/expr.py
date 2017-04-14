@@ -32,8 +32,8 @@ class Expression:
 
     # auf strukturelle Gleichheit zu anderem Ausdruck pruefen
     def __eq__(self, other):
-        if other.isa(Wildcard):
-            return other == self
+        if not isinstance(other, Expression):
+            return False
         if self.type != other.type:
             return False
         if len(self.args) is not len(other.args):
@@ -107,34 +107,12 @@ class Expression:
             return [self.func(*ls) for ls in itertools.permutations(self.args)]
         return [self]
 
-    # Rekursiv pattern durch expr val ersetzen
-    def replace(self, pattern, expr):
-        for perm in self.perms():
-            if perm == pattern and not pattern.isa(Wildcard):
-                wildcardSubs = perm.require(pattern)
-                print(wildcardSubs)
-                # TODO: colliding wildcard substitutions?
-
-                for wc, sub in wildcardSubs:
-                    expr = expr.replace(wc, sub)
-                return expr
-            if perm.isa(Atom):
-                return perm
-            args = [arg.replace(pattern, expr) for arg in perm._args]
-            return perm.func(*args)
-        return self
-
-    # return list of all required wildcard substitutions for two equal
-    # expressions
-    def require(self, pattern):
-        if pattern.isa(Wildcard):
-            return pattern.require(self)
-        if self.isa(Atom) or pattern.isa(Atom):
-            return []
-        result = []
-        for a1, a2 in zip(self.args, pattern.args):
-            result += a1.require(a2)
-        return result
+    # recursively replace var by val
+    def set(self, var, val):
+        if self == var:
+            return val
+        args = [arg.set(var, val) for arg in self.args]
+        return self.func(*args)
 
     # get all nodes of the Expression tree matching class cls
     def getNodes(self, cls=None):
@@ -147,6 +125,5 @@ class Expression:
         return result
 
 
-
-from .atom import Atom, Int, Wildcard
-from .elementary import Add, Mul, Div, Pow
+from mathexpr.atom import Atom, Int, Wildcard
+from mathexpr.elementary import Add, Mul, Div, Pow

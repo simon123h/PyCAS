@@ -1,4 +1,4 @@
-from .Rule import Rule, DeepRule, RuleSet, RuleRegistry
+from trs.Rule import Rule, DeepRule, RuleSet, RuleRegistry
 from mathexpr.atom import Wildcard, Int
 from mathexpr.elementary import Add, Mul, Div, Pow
 from mathexpr.specialNumbers import Zero, One, Infinity
@@ -37,7 +37,7 @@ intMul = RuleSet(
     ),
     DeepRule(
         lambda expr: Int(product([arg.val for arg in expr.args])) if all(arg.isa(Int) for arg in expr.args) else expr,
-        matchType=Add
+        matchType=Mul
     ),
     Rule(
         Zero * Wildcard(),

@@ -1,5 +1,5 @@
-from .expr import Expression
-from .atom import Int
+from mathexpr.expr import Expression
+from mathexpr.atom import Int
 
 
 class Add(Expression):

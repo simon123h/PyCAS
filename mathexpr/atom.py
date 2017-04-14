@@ -3,12 +3,14 @@ Atomare Bestandteile eines math. Ausdrucks:
 Blaetter in der zugehoerigen Baumstruktur
 """
 
-from .expr import Expression
+from mathexpr.expr import Expression
 
 
 # abstrakte Mutter-Klasse
 class Atom(Expression):
-    def eval(self):
+    def set(self, var, val):
+        if self == var:
+            return val
         return self
 
 
@@ -59,12 +61,12 @@ class Wildcard(Atom):
     def __init__(self, name="", matchType=None):
         self.name = str(name)
         self.matchType = matchType
-        super().__init__(name)
+        super().__init__(name, matchType)
         self.required = None
 
     # a Wildcard matches every expression (restricted by matchType)
     # if any requirements have been made in require, compare to them as well
-    def __eq__(self, other):
+    def match(self, other):
         if other.isa(Expression):
             return ((self.matchType is None or other.isa(self.matchType)) and
                     (self.required is None or other == self.required))
