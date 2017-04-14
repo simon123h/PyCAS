@@ -28,12 +28,6 @@ class Int(Num):
     def __str__(self):
         return str(self.val)
 
-    # Addition
-    # def __add__(self, other):
-    #     if other.isa(Int):
-    #         return Int(self.val + other.val)
-    #     return other.__add__(self)
-
 
 # Variablen
 class Var(Atom):
@@ -46,7 +40,7 @@ class Var(Atom):
 
 
 # Konstanten
-class Constant(Atom):
+class Constant(Num):
     def __init__(self, strrep, val):
         Expression.__init__(self, strrep, val)
         self.val = val
@@ -58,25 +52,16 @@ class Constant(Atom):
 
 # Wildcards fuer pattern matching
 class Wildcard(Atom):
-    def __init__(self, name="", matchType=None):
+    def __init__(self, name="", matchType=None, matchFunc=None):
         self.name = str(name)
         self.matchType = matchType
+        self.matchFunc = matchFunc   # a function. Matches if func(expr) == True
         super().__init__(name, matchType)
-        self.required = None
 
     # a Wildcard matches every expression (restricted by matchType)
     # if any requirements have been made in require, compare to them as well
-    def match(self, other):
-        if other.isa(Expression):
-            return ((self.matchType is None or other.isa(self.matchType)) and
-                    (self.required is None or other == self.required))
+    def matches(self, expr):
+        if expr.isa(Expression):
+            return ((self.matchType is None or expr.isa(self.matchType)) and
+                    (self.matchFunc is None or self.matchFunc(expr)))
         return False
-
-    def replace(self, pattern, expr):
-        if pattern.isa(Wildcard) and self.name is pattern.name:
-            return expr
-        return self
-
-    def require(self, other):
-        self.required = other
-        return [(self, other)]

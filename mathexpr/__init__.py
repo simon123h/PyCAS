@@ -1,9 +1,10 @@
 
 # Alle Module, die beim Laden des Packages verfuegbar sein sollen
-from .expr import *
-from .atom import *
-from .specialNumbers import *
-from .vector import *
+from mathexpr.expr import Expression
+from mathexpr.atom import Atom, Num, Int, Constant, Var, Wildcard
+from mathexpr.elementary import Add, Sub, Mul, Div, Pow
+from mathexpr.specialNumbers import Zero, One, Infinity, NegativeInfinity
+# from mathexpr.vector import *
 # from .elementary import *
 # from . import specialNumbers as S
 # from .functions import *

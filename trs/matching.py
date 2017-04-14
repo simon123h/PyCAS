@@ -8,9 +8,9 @@ from mathexpr.atom import Atom, Wildcard
 def match(expr, pattern):
     if not isinstance(pattern, Expression):     # is pattern a Expression?
         return False, []
-    if pattern.isa(Wildcard):                   # Wildcards always match
+    if pattern.isa(Wildcard) and pattern.matches(expr):  # Wildcards always match
         return True, [(pattern, expr)]          # but return requirements
-    if expr.isa(Wildcard):
+    if expr.isa(Wildcard) and expr.matches(pattern):
         return True, [(expr, pattern)]
     if expr.type != pattern.type:               # check for equality, like in __eq__
         return False, []

@@ -1,4 +1,4 @@
-import trs.patterns as patterns
+import trs.matching as matching
 
 
 class Rule:
@@ -10,7 +10,7 @@ class Rule:
         return Rule(self.rhs, self.lhs)
 
     def apply(self, expr):
-        return patterns.replace(expr, self.lhs, self.rhs)
+        return matching.replace(expr, self.lhs, self.rhs)
 
 
 class DeepRule(Rule):
@@ -36,12 +36,18 @@ class RuleSet:
         self.rules += list(rules)
 
     # apply all matching rules
-    def apply(self, expr, printSteps=False):
-        for rule in reversed(self.rules):
-            before = expr
-            expr = rule.apply(expr)
-            if printSteps and not before == expr:
-                print(before)
+    def apply(self, expr, printSteps=False, repetitive=False):
+        changed = True
+        while changed:
+            changed = False
+            for rule in reversed(self.rules):
+                before = expr
+                expr = rule.apply(expr)
+                if not before == expr:
+                    if printSteps:
+                        print(before)
+                    if repetitive:
+                        changed = True
         return expr
 
     def __add__(self, other):
@@ -52,8 +58,8 @@ class RuleSet:
 
 
 class RuleRegistry:
-    def __init__(self, ruleSets=[]):
-        self.ruleSets = ruleSets
+    def __init__(self, *ruleSets):
+        self.ruleSets = list(ruleSets)
 
     def addSet(self, set):
         self.ruleSets.append(set)
@@ -65,3 +71,6 @@ class RuleRegistry:
         for ruleSet in reversed(self.ruleSets):
             expr = ruleSet.apply(expr, printSteps)
         return expr
+
+    def asSet(self):
+        return sum(self.ruleSets)

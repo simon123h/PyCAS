@@ -1,7 +1,7 @@
-from trs.Rule import Rule, DeepRule, RuleSet, RuleRegistry
 from mathexpr.atom import Wildcard, Int
 from mathexpr.elementary import Add, Mul, Div, Pow
 from mathexpr.specialNumbers import Zero, One, Infinity
+from trs.rule import Rule, DeepRule, RuleSet, RuleRegistry
 
 
 intAdd = RuleSet(
@@ -79,6 +79,4 @@ intDiv = RuleSet(
 )
 
 
-integerArithmetic = intAdd + intSub + intMul + intDiv + intPow
-
-arithm = RuleRegistry([integerArithmetic])
+intArithmetics = RuleRegistry(intAdd, intSub, intMul, intDiv, intPow)

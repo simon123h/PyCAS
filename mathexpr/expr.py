@@ -124,6 +124,3 @@ class Expression:
             if isinstance(arg, Expression):
                 result += arg.getNodes(cls)
         return result
-
-
-# from mathexpr.elementary import Add, Mul, Div, Pow
