@@ -5,19 +5,11 @@ from trs import *
 # from patternmatching import *
 
 
-# testing
-
-x = Wildcard("x")
-m = Add(Int(5), Int(6))
-p = Add(x, Int(6))
-n = Mul(x, Int(2))
-
-r = Rule(Add(x, x), Mul(Int(2), x))
-
-a = Int(3) + Int(4)
+m = Add(Var("x"), Zero)
 
 
 # TODO: nichtassoziative/nichtkommutative Operatoren
 # TODO: elaborate Number classes
 # TODO: Kommentare schreiben
+# TODO: Kommentare auf englisch
 # TODO: InfinityRules

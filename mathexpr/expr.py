@@ -5,6 +5,7 @@ Implementiert Methoden moeglichst allgemein.
 """
 
 import itertools
+import mathexpr
 
 
 class Expression:
@@ -64,40 +65,40 @@ class Expression:
         return self
 
     def __neg__(self):
-        return Mul(Int(-1), self)
+        return mathexpr.elementary.Mul(mathexpr.atom.Int(-1), self)
 
     def __add__(self, other):
-        return Add(self, other)
+        return mathexpr.elementary.Add(self, other)
 
     def __radd__(self, other):
-        return Add(other, self)
+        return mathexpr.elementary.Add(other, self)
 
     def __sub__(self, other):
-        return Add(self, -other)
+        return mathexpr.elementary.Sub(self, other)
 
     def __rsub__(self, other):
-        return Add(other, -self)
+        return mathexpr.elementary.Sub(other, self)
 
     def __mul__(self, other):
-        return Mul(self, other)
+        return mathexpr.elementary.Mul(self, other)
 
     def __rmul__(self, other):
-        return Mul(other, self)
+        return mathexpr.elementary.Mul(other, self)
 
     def __pow__(self, other):
-        return Pow(self, other)
+        return mathexpr.elementary.Pow(self, other)
 
     def __rpow__(self, other):
-        return Pow(other, self)
+        return mathexpr.elementary.Pow(other, self)
 
     def __xor__(self, other):
-        return Pow(self, other)
+        return mathexpr.elementary.Pow(self, other)
 
     def __truediv__(self, other):
-        return Div(self, other)
+        return mathexpr.elementary.Div(self, other)
 
     def __rtruediv__(self, other):
-        return Div(other, self)
+        return mathexpr.elementary.Div(other, self)
     __div__ = __truediv__
     __rdiv__ = __rtruediv__
 
@@ -125,5 +126,4 @@ class Expression:
         return result
 
 
-from mathexpr.atom import Atom, Int, Wildcard
-from mathexpr.elementary import Add, Mul, Div, Pow
+# from mathexpr.elementary import Add, Mul, Div, Pow

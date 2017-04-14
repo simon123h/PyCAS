@@ -40,7 +40,7 @@ class RuleSet:
         for rule in reversed(self.rules):
             before = expr
             expr = rule.apply(expr)
-            if not before == expr:
+            if printSteps and not before == expr:
                 print(before)
         return expr
 

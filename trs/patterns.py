@@ -39,8 +39,8 @@ def replace(expr, pattern, new):
             for wc, sub in requirements:     # substitute wildcards into new
                 new = new.set(wc, sub)
             return new
-        if perm.isa(Atom):                   # if not matching: pass recursively
-            return perm
-        args = [replace(arg, pattern, new) for arg in perm._args]
-        return perm.func(*args)
+    if expr.isa(Atom):                   # if none matching: pass recursively
+        return expr
+    args = [replace(arg, pattern, new) for arg in expr._args]
+    return expr.func(*args)
     return expr

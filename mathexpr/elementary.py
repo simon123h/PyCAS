@@ -1,5 +1,4 @@
 from mathexpr.expr import Expression
-from mathexpr.atom import Int
 
 
 class Add(Expression):
@@ -22,16 +21,6 @@ class Mul(Expression):
 
     def __str__(self):
         return "*".join([arg.__str__() for arg in self.args])
-
-    # hardcoded multiplication rules, axiomatic for int arithmetics
-    def eval(self):
-        print("evald mul")
-        if all(arg.isa(Int) for arg in self.args):
-            result = 1
-            for arg in self.args:
-                result *= arg.val
-            return Int(result)
-        return super().eval()
 
 
 class Div(Expression):
