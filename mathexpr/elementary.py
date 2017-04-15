@@ -1,20 +1,33 @@
+from .expr import Expression
 
-from .expr import *
 
 class Add(Expression):
-	pass
-	
-class Sub(Expression):
-	pass
-	
-class Mul(Expression):
-	pass
-	
-class Div(Expression):
-	pass
-	
-class Pow(Expression):
-	pass
-	
+    isAssociative = True
+    isCommutative = True
 
-from .atom import *
+    def __str__(self):
+        return "+".join([arg.__str__() for arg in self.args])
+
+
+class Sub(Expression):
+
+    def __str__(self):
+        return "-".join([arg.__str__() for arg in self.args])
+
+
+class Mul(Expression):
+    isAssociative = True
+    isCommutative = True
+
+    def __str__(self):
+        return "*".join([arg.__str__() for arg in self.args])
+
+
+class Div(Expression):
+    def __str__(self):
+        return "/".join([arg.__str__() for arg in self.args[:2]])
+
+
+class Pow(Expression):
+    def __str__(self):
+        return "^".join([arg.__str__() for arg in self.args[:2]])
