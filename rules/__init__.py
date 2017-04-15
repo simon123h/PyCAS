@@ -4,7 +4,13 @@
 # Defines the namespace elements to be imported with the package
 
 __all__ = [
-    'intArithmetics'
+    'all',
+    'arithmetics',
+    'infinity'
 ]
 
-from .intArithmetics import intArithmetics
+from .arithmetics import arithmeticRules as arithmetics
+from .infinity import infinityRules as infinity
+
+# All rules
+all = arithmetics + infinity

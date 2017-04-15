@@ -71,24 +71,6 @@ class RuleSet:
             raise TypeError("unsupported operand type(s) for +: 'RuleSet' and 'RuleSet'")
 
 
-# A set of a set of rules
-# DEPRECATED: this shouldn't be needed
-# TODO: Replace RuleRegistry by another RuleSet
-class RuleRegistry:
-    def __init__(self, *ruleSets):
-        self.ruleSets = list(ruleSets)
-
-    def addSet(self, set):
-        self.ruleSets.append(set)
-
-    def removeSet(self, set):
-        self.ruleSets.remove(set)
-
-    def apply(self, expr, printSteps=False):
-        for ruleSet in reversed(self.ruleSets):
-            expr = ruleSet.apply(expr, printSteps)
-        return expr
-
-    # LEGACY
-    def asSet(self):
-        return sum(self.ruleSets)
+# TODO: something between Rule and DeepRule: I need to first match with
+# a pattern, and then return func(expr) where func knows the wildcard
+# substitutions or something

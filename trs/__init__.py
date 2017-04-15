@@ -5,7 +5,7 @@
 # Defines the namespace elements to be imported with the package
 
 __all__ = [
-    'DeepRule', 'Rule', 'RuleSet', 'RuleRegistry'
+    'DeepRule', 'Rule', 'RuleSet'
 ]
 
-from .rule import DeepRule, Rule, RuleSet, RuleRegistry
+from .rule import DeepRule, Rule, RuleSet

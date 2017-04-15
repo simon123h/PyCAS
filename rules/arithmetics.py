@@ -1,11 +1,12 @@
 """
-RuleSets for Integer arithmetics
+RuleSets for elementary arithmetics
 """
+# TODO: rename file to elementary?
 
 from mathexpr.atom import Wildcard, Int
 from mathexpr.elementary import Add, Mul, Div, Pow
 from mathexpr.specialNumbers import Zero, One, Infinity
-from trs.rule import Rule, DeepRule, RuleSet, RuleRegistry
+from trs.rule import Rule, DeepRule, RuleSet
 
 
 # Integer Addition rules (top node is Addition)
@@ -88,7 +89,6 @@ intDiv = RuleSet(
 )
 
 
-# combine all to a common RuleSet/RuleRegistry
+# combine all to a common RuleSet
 # take care on order for good performance
-# TODO: make this a set, RuleRegistry should not be needed at all
-intArithmetics = RuleRegistry(intAdd, intSub, intMul, intDiv, intPow)
+arithmeticRules = intAdd + intSub + intMul + intDiv + intPow
