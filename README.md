@@ -7,9 +7,6 @@ Current functionality covers Integer arithmetics only. We're still doing the
 basics here.
 
 ## Issues
-TODO: Kommentare schreiben
-TODO: Kommentare auf englisch uebersetzen
-TODO: entschlacken
 TODO: arithmetic rules
 TODO: general rules?
 TODO: InfinityRules
