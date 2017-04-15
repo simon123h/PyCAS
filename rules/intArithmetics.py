@@ -1,11 +1,16 @@
+"""
+RuleSets for Integer arithmetics
+"""
+
 from mathexpr.atom import Wildcard, Int
 from mathexpr.elementary import Add, Mul, Div, Pow
 from mathexpr.specialNumbers import Zero, One, Infinity
 from trs.rule import Rule, DeepRule, RuleSet, RuleRegistry
 
 
+# Integer Addition rules (top node is Addition)
 intAdd = RuleSet(
-    # Fallback to hardcoded evaluation rules
+    # DeepRules fallback to hardcoded evaluation rules
     DeepRule(
         lambda expr: expr.args[0] if len(expr.args) == 1 else expr,
         matchType=Add
@@ -21,7 +26,7 @@ intAdd = RuleSet(
 )
 
 
-# Evaluate a product of all Ints list
+# helping function: Evaluate a product of all Ints list
 def product(factors):
     result = 1
     for factor in factors:
@@ -29,8 +34,9 @@ def product(factors):
     return result
 
 
+# Integer Multiplication rules (top node is Multiplication)
 intMul = RuleSet(
-    # Fallback to hardcoded evaluation rules
+    # DeepRules fallback to hardcoded evaluation rules
     DeepRule(
         lambda expr: expr.args[0] if len(expr.args) == 1 else expr,
         matchType=Mul
@@ -49,6 +55,7 @@ intMul = RuleSet(
     )
 )
 
+# Integer exponentiation rules
 intPow = RuleSet(
     Rule(
         Pow(Wildcard(), Zero),
@@ -60,6 +67,7 @@ intPow = RuleSet(
     )
 )
 
+# Subtraction rules
 intSub = RuleSet(
     Rule(
         Wildcard("a") - Wildcard("b"),
@@ -67,6 +75,7 @@ intSub = RuleSet(
     )
 )
 
+# Division rules
 intDiv = RuleSet(
     Rule(
         Div(Wildcard("a"), Wildcard("b")),
@@ -79,4 +88,7 @@ intDiv = RuleSet(
 )
 
 
+# combine all to a common RuleSet/RuleRegistry
+# take care on order for good performance
+# TODO: make this a set, RuleRegistry should not be needed at all
 intArithmetics = RuleRegistry(intAdd, intSub, intMul, intDiv, intPow)

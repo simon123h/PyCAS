@@ -1,3 +1,12 @@
+"""
+Functionality to match patterns (with wildcards),
+find the corresponding term substitutions for the wildcards,
+substitute them into a new expression
+and replace the old matched expression with the new one.
+These functions should not be needed outside of the TRS package.
+They're yet only used by the Rule mechanism.
+"""
+
 from mathexpr.expr import Expression
 from mathexpr.atom import Atom, Wildcard
 

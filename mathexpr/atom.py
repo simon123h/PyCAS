@@ -1,12 +1,13 @@
 """
 Atomic components of a mathematical Expression.
 Leafs of the corresponding tree structure.
+Includes, Numerals, Variables and Wildcards
 """
 
 from .expr import Expression
 
 
-# abstrakte Mutter-Klasse
+# abstract parent class for all atomic Expressions
 class Atom(Expression):
     def set(self, var, val):
         if self == var:
@@ -14,12 +15,12 @@ class Atom(Expression):
         return self
 
 
-# alle Numerale
+# abstract parent class for Numerals
 class Num(Atom):
     pass
 
 
-# Integer
+# Integers
 class Int(Num):
     def __init__(self, val):
         self.val = val
@@ -29,7 +30,7 @@ class Int(Num):
         return str(self.val)
 
 
-# Variablen
+# Variables
 class Var(Atom):
     def __init__(self, name):
         self.name = str(name)
@@ -39,7 +40,7 @@ class Var(Atom):
         return self.name
 
 
-# Konstanten
+# Constants have a special representation and tend to remain unchanged
 class Constant(Num):
     def __init__(self, strrep, val):
         Expression.__init__(self, strrep, val)
@@ -50,15 +51,15 @@ class Constant(Num):
         return self.strrep
 
 
-# Wildcards fuer pattern matching
+# Wildcards for pattern matching
 class Wildcard(Atom):
     def __init__(self, name="", matchType=None, matchFunc=None):
         self.name = str(name)
         self.matchType = matchType
-        self.matchFunc = matchFunc   # a function. Matches if func(expr) == True
+        self.matchFunc = matchFunc   # a function: matches if func(expr) == True
         super().__init__(name, matchType)
 
-    # a Wildcard matches every expression (restricted by matchType)
+    # A Wildcard matches every expression (restricted by matchType)
     # if any requirements have been made in require, compare to them as well
     def matches(self, expr):
         if expr.isa(Expression):

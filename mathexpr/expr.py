@@ -1,7 +1,7 @@
 """
-abstrakte Mutter-Klasse fuer math. Ausdruecke.
-Gibt alle notwendigen Methoden fuer Kind-Klassen an.
-Implementiert Methoden moeglichst allgemein.
+Abstract parent class for all mathematical Expressions.
+Defines all necessary member methods for children classes.
+Implements methods in general ways, if possible.
 """
 
 import itertools
@@ -11,26 +11,26 @@ class Expression:
     isAssociative = False
     isCommutative = False
 
-    # Konstruktor
+    # constructor
     def __init__(self, *args):
         self._args = list(args)
 
-    # Typ der obersten Operation
+    # type of current node
     @property
     def type(self):
         return self.__class__.__name__
 
-    # Klasse/Konstruktor der obersten Operation
+    # class/Constructor of current node
     @property
     def func(self):
         return self.__class__
 
-    # Argumente
+    # arguments (usually: children) of node
     @property
     def args(self):
         return self._args
 
-    # auf strukturelle Gleichheit zu anderem Ausdruck pruefen
+    # test if Expression tree is structually equal to other Expression tree
     def __eq__(self, other):
         if not isinstance(other, Expression):
             return False
@@ -47,13 +47,13 @@ class Expression:
     def isa(self, cls):
         return isinstance(self, cls)
 
-    # Ausgabe
+    # print the Expression tree as a string
     def __str__(self):
         if self.type == "Expression":
             return str(self.args[0])
         return self.__class__.__name__ + "(" + ", ".join([str(arg) for arg in self.args]) + ")"
 
-    # Builtin-Operatoren ueberschreiben
+    # override builtin operations
     def __repr__(self):
         return str(self)
 
@@ -101,7 +101,7 @@ class Expression:
     __div__ = __truediv__
     __rdiv__ = __rtruediv__
 
-    # return all permutations if the operatand is commutative
+    # return all permutations if the operand is commutative
     def perms(self):
         if self.isCommutative:
             return [self.func(*ls) for ls in itertools.permutations(self.args)]
@@ -125,5 +125,6 @@ class Expression:
         return result
 
 
+# bottom imports to solve circular dependencies
 from .elementary import Add, Sub, Mul, Div, Pow  # noqa
 from .atom import Int  # noqa

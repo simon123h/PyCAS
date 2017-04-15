@@ -1,3 +1,10 @@
+"""
+A class system to define term rewriting rules,
+consisting each of a lhs and a rhs.
+The lhs can be matched against Expressions using matching.py
+and in case of a match, the rule inserts the rhs in the Expression.
+"""
+
 from .matching import replace
 
 
@@ -9,10 +16,17 @@ class Rule:
     def invert(self):
         return Rule(self.rhs, self.lhs)
 
+    # check if lhs matches expr
+    # if they match, insert rhs with corresponding Wildcard substitutions
+    # this is all handled in matching.py's replace method
     def apply(self, expr):
         return replace(expr, self.lhs, self.rhs)
 
 
+# DeepRules give deeper Expression manipulation functionality,
+# as they are simply given a function to be applied to the expression.
+# Use DeepRules, whenever regular TRS with the given Wildcard matching
+# functionality is not sufficient.
 class DeepRule(Rule):
     # pass a function that is applied to an expression when applying the rule
     def __init__(self, func, matchType=None):
@@ -57,6 +71,9 @@ class RuleSet:
             raise TypeError("unsupported operand type(s) for +: 'RuleSet' and 'RuleSet'")
 
 
+# A set of a set of rules
+# DEPRECATED: this shouldn't be needed
+# TODO: Replace RuleRegistry by another RuleSet
 class RuleRegistry:
     def __init__(self, *ruleSets):
         self.ruleSets = list(ruleSets)
@@ -72,5 +89,6 @@ class RuleRegistry:
             expr = ruleSet.apply(expr, printSteps)
         return expr
 
+    # LEGACY
     def asSet(self):
         return sum(self.ruleSets)
