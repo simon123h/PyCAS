@@ -1,9 +1,9 @@
 """
-Atomare Bestandteile eines math. Ausdrucks:
-Blaetter in der zugehoerigen Baumstruktur
+Atomic components of a mathematical Expression.
+Leafs of the corresponding tree structure.
 """
 
-from mathexpr.expr import Expression
+from .expr import Expression
 
 
 # abstrakte Mutter-Klasse

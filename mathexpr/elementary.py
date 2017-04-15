@@ -1,4 +1,4 @@
-from mathexpr.expr import Expression
+from .expr import Expression
 
 
 class Add(Expression):

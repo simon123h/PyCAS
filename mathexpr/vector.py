@@ -1,5 +1,5 @@
 
-from .expr import *
+from .expr import Expression
 
 
 class Matrix(Expression):

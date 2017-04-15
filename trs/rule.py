@@ -1,4 +1,4 @@
-import trs.matching as matching
+from .matching import replace
 
 
 class Rule:
@@ -10,7 +10,7 @@ class Rule:
         return Rule(self.rhs, self.lhs)
 
     def apply(self, expr):
-        return matching.replace(expr, self.lhs, self.rhs)
+        return replace(expr, self.lhs, self.rhs)
 
 
 class DeepRule(Rule):
