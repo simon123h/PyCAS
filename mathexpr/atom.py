@@ -66,3 +66,12 @@ class Wildcard(Atom):
             return ((self.matchType is None or expr.isa(self.matchType)) and
                     (self.matchFunc is None or self.matchFunc(expr)))
         return False
+
+
+# Undefined expression (e.g. 0/0)
+class Undefined(Atom):
+    def matches(self, expr):
+        return False
+
+    def __str__(self):
+        return "(undefined)"

@@ -55,6 +55,8 @@ class NegativeInfinity(Atom):
 
 NegativeInfinity = NegativeInfinity()
 
+# TODO: ComplexInfinity
+
 # for ease of use
 One = Int(1)
 Zero = Int(0)

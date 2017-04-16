@@ -10,8 +10,11 @@ basics here.
 - TODO: arithmetic rules
 - TODO: general rules?
 - TODO: InfinityRules
-- TODO: elaborate Number classes
+- TODO: elaborate Number classes, Rational, Real, Complex
 - TODO: create new node types, vector, matrix, functions
+- TODO: undefined Atom (e.g 0/0)
+- TODO: for Infinity and undefined, save what caused it?
+- TODO: str output with correct parentheses
 
 ## Resources
 https://en.wikipedia.org/wiki/Expression
