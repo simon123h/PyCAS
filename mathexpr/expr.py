@@ -101,11 +101,19 @@ class Expression:
     __div__ = __truediv__
     __rdiv__ = __rtruediv__
 
-    # return all permutations if the operand is commutative
-    def perms(self):
-        if self.isCommutative:
-            return [self.func(*ls) for ls in itertools.permutations(self.args)]
-        return [self]
+    # return all permutations of tree if the operand is commutative
+    # increase maxDepth if some rules need more deeper permutation
+    def perms(self, maxDepth=5):
+        if self.isa(Atom) or maxDepth == 0:
+            return [self]
+        result = []
+        argCombinations = itertools.product(*[arg.perms(maxDepth-1) for arg in self.args])
+        for argCombination in argCombinations:
+            if self.isCommutative:
+                result += [self.func(*ls) for ls in itertools.permutations(argCombination)]
+            else:
+                result += [self.func(*argCombination)]
+        return result
 
     # recursively replace var by val
     def set(self, var, val):
@@ -127,4 +135,4 @@ class Expression:
 
 # bottom imports to solve circular dependencies
 from .elementary import Add, Sub, Mul, Div, Pow  # noqa
-from .atom import Int  # noqa
+from .atom import Atom, Int  # noqa

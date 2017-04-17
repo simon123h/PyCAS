@@ -44,7 +44,9 @@ def match(expr, pattern):
 def replace(expr, pattern, new):
     # TODO: apply replace recursively to all leaves before applying it in the node
     # --> better efficiency
-    for perm in expr.perms():  # TODO: what about the perms of the leaves?
+    for perm in expr.perms():
+        # NOTICE: Instead of calculating ALL PERMS of the tree, calculating only perms
+        # of the pattern would be more efficent, though this won't work for DeepRules
         matching, requirements = match(perm, pattern)
         if matching:                         # if pattern matches expr,
             for wc, sub in requirements:     # substitute wildcards into new

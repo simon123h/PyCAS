@@ -10,10 +10,11 @@ from mathexpr.atom import Atom
 
 
 class Rule:
+    # TODO: change order of args? name to front?
     def __init__(self, lhs, rhs, name=None):
+        self.name = name
         self.lhs = lhs
         self.rhs = rhs
-        self.name = name
 
     def invert(self):
         return Rule(self.rhs, self.lhs)
@@ -58,16 +59,29 @@ class RuleSet:
         self.rules += list(rules)
 
     # apply all matching rules
-    def apply(self, expr, printSteps=True, repetitive=True):
+    def apply(self, expr, printSteps=True, repetitive=True, detectCycles=True):
         changed = True
+        history = []
+        ruleHistory = []
         while changed:
             changed = False
             for rule in reversed(self.rules):
                 before = expr
                 expr = rule.apply(expr)
+                # if rule caused a change
                 if not before == expr:
+                    # check for cyclic replacements
+                    if detectCycles:
+                        if before in history:
+                            print(zip(history, ruleHistory))
+                            raise CyclicTRException()
+                        history.append(before)
+                        ruleHistory.append(rule)
+                    # print rule replacement steps
                     if printSteps:
-                        print(rule.name+": " if rule.name is not None else "", before)
+                        print(before)
+                        if rule.name is not None:
+                            print(rule.name+":")
                     if repetitive:
                         changed = True
         return expr
@@ -82,3 +96,10 @@ class RuleSet:
 # TODO: something between Rule and DeepRule: I need to first match with
 # a pattern, and then return func(expr) where func knows the wildcard
 # substitutions or something
+
+
+class CyclicTRException(Exception):
+    def __init__(self, message, errors):
+        if message is None:
+            message = "Cyclic Replacements in pattern, need to adjust rules!"
+        super().__init__(message)

@@ -1,5 +1,5 @@
 """
-RuleSets for elementary arithmetics
+RuleSets for term beautification
 """
 
 
