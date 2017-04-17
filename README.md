@@ -3,13 +3,15 @@ A computer algebra system (CAS) based on a rule-based term rewriting system
 (TRS).
 
 ## Progress
-Current functionality covers Integer arithmetics only. We're still doing the
-basics here.
+Current functionality covers Real arithmetics well. Also, variables, vectors
+and matrices are slowly gaining support.
 
 ## Issues
 - TODO: general rules?
+- TODO: more Real rules
 - TODO: elaborate Number classes, Rational, Real, Complex
-- TODO: create new node types, vector, matrix, functions
+- TODO: complex rules, vector rules, rational
+
 
 ## Resources
 https://en.wikipedia.org/wiki/Expression

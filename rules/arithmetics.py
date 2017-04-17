@@ -116,7 +116,7 @@ intSub = RuleSet(
     Rule(
         Sub(Wildcard("a"), Wildcard("b")),
         Wildcard("a") + (Int(-1) * Wildcard("b")),
-        name="+ is * with neg. number"
+        name="- is + with neg. number"
     ),
     Rule(
         nonExceptWC - nonExceptWC,
@@ -205,7 +205,7 @@ def sternBrocot(val, minError=10**-32, maxIter=10**5):
         error = abs(val - med)
         i += 1
     if isNegative:
-        return -pMed, qMed
+        return -pMed, qMed, error, i
     return pMed, qMed, error, i
 
 

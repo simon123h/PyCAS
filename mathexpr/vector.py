@@ -14,6 +14,7 @@ class Tensor(Expression):
             self.rank += 1
             self.dimensions.append(len(d[0]))
             d = d[0]
+        super().__init__(data)
 
 
 class Matrix(Tensor):
@@ -46,12 +47,10 @@ class Vector(Matrix):
     def __init__(self, data):
         self.data = list(data)
         self.dimension = len(list(data))
-        super(Expression, self).__([[x] for x in list(data)])
-        super(Expression, self).__init__(data)
+        super(Matrix, self).__init__([[x] for x in list(data)])
 
     def __str__(self):
-        data = [", ".join([str(x) for x in row]) for row in self.data]
-        return "{" + ", ".join(data) + "}^T"
+        return "{" + ", ".join([str(d) for d in self.data]) + "}^T"
 
     def dotProd(self, other):
         pass

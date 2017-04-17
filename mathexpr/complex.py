@@ -2,9 +2,11 @@
 Class for complex numbers
 """
 
+from .expr import Expression
+
 
 # TODO: elaborate
-class Complex():
+class Complex(Expression):
     def __init__(self, re, im):
         self.re = re
         self.im = im

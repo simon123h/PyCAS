@@ -5,7 +5,6 @@ Includes, Numerals, Variables and Wildcards
 """
 
 from .expr import Expression
-from .elementary import Div
 
 
 # abstract parent class for all atomic Expressions
@@ -31,21 +30,28 @@ class Real(Num):
         return str(self.val)
 
 
-# TODO: Rational class? Redundancy with elementary.Div?
-
-# Rational numbers
-class Rational(Div, Real):
-    def __init__(self, p, q=1):
-        self.p = p
-        self.q = q
-        super(Real, self).__init__(float(p) / float(q))
-
-    def __str__(self):
-        return super(Div, self).__str__()
+# # Rational numbers
+# class Rational(Div, Real):
+#     def __init__(self, p, q=1):
+#         if isinstance(p, Int):
+#             p = p.val
+#         if isinstance(q, Int):
+#             q = q.val
+#         self.p = p
+#         self.q = q
+#         super(Real, self).__init__(float(p) / float(q))
+#         super(Num, self).__init__(p, q)
+#
+#     def __str__(self):
+#         return super(Div, self).__str__()
+#
+#     @property
+#     def args(self):
+#         return [Int(self.p), Int(self.q)]
 
 
 # Integers
-class Int(Rational):
+class Int(Real):
     def __init__(self, val):
         self.val = val
         super().__init__(val)
