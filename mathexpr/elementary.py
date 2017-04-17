@@ -12,7 +12,7 @@ class Add(Expression):
     isCommutative = True
 
     def __str__(self):
-        return "+".join([arg.__str__() for arg in self.args])
+        return "("+("+".join([arg.__str__() for arg in self.args]))+")"
 
 
 # Subtraction
@@ -28,16 +28,16 @@ class Mul(Expression):
     isCommutative = True
 
     def __str__(self):
-        return "*".join([arg.__str__() for arg in self.args])
+        return "("+("*".join([arg.__str__() for arg in self.args]))+")"
 
 
 # Division
 class Div(Expression):
     def __str__(self):
-        return "/".join([arg.__str__() for arg in self.args[:2]])
+        return "("+("/".join([arg.__str__() for arg in self.args]))+")"
 
 
 # Exponentiation
 class Pow(Expression):
     def __str__(self):
-        return "^".join([arg.__str__() for arg in self.args[:2]])
+        return "("+("^".join([arg.__str__() for arg in self.args]))+")"

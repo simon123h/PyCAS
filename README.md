@@ -12,7 +12,6 @@ basics here.
 - TODO: InfinityRules
 - TODO: elaborate Number classes, Rational, Real, Complex
 - TODO: create new node types, vector, matrix, functions
-- TODO: undefined Atom (e.g 0/0)
 - TODO: for Infinity and undefined, save what caused it?
 - TODO: str output with correct parentheses
 

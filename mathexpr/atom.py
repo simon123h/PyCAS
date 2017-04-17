@@ -43,9 +43,9 @@ class Var(Atom):
 # Constants have a special representation and tend to remain unchanged
 class Constant(Num):
     def __init__(self, strrep, val):
-        Expression.__init__(self, strrep, val)
-        self.val = val
         self.strrep = strrep
+        self.val = val
+        super().__init__(self, strrep, val)
 
     def __str__(self):
         return self.strrep
@@ -53,18 +53,25 @@ class Constant(Num):
 
 # Wildcards for pattern matching
 class Wildcard(Atom):
-    def __init__(self, name="", matchType=None, matchFunc=None):
+    def __init__(self, name="", matchType=None, matchFunc=None, excludeType=None):
         self.name = str(name)
         self.matchType = matchType
         self.matchFunc = matchFunc   # a function: matches if func(expr) == True
-        super().__init__(name, matchType)
+        self.excludeType = excludeType
+        super().__init__(str(name), matchType, matchFunc, excludeType)
 
     # A Wildcard matches every expression (restricted by matchType)
     # if any requirements have been made in require, compare to them as well
     def matches(self, expr):
         if expr.isa(Expression):
             return ((self.matchType is None or expr.isa(self.matchType)) and
+                    (self.excludeType is None or not expr.isa(tuple(self.excludeType))) and
                     (self.matchFunc is None or self.matchFunc(expr)))
+        return False
+
+    def __eq__(self, other):
+        if isinstance(other, Expression):
+            return other.isa(Wildcard) and other.name == self.name
         return False
 
 

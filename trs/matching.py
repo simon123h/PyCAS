@@ -42,7 +42,9 @@ def match(expr, pattern):
 
 # Replace part of expr matching pattern by new
 def replace(expr, pattern, new):
-    for perm in expr.perms():
+    # TODO: apply replace recursively to all leaves before applying it in the node
+    # --> better efficiency
+    for perm in expr.perms():  # TODO: what about the perms of the leaves?
         matching, requirements = match(perm, pattern)
         if matching:                         # if pattern matches expr,
             for wc, sub in requirements:     # substitute wildcards into new

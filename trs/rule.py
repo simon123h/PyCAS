@@ -6,12 +6,14 @@ and in case of a match, the rule inserts the rhs in the Expression.
 """
 
 from .matching import replace
+from mathexpr.atom import Atom
 
 
 class Rule:
-    def __init__(self, lhs, rhs):
+    def __init__(self, lhs, rhs, name=None):
         self.lhs = lhs
         self.rhs = rhs
+        self.name = name
 
     def invert(self):
         return Rule(self.rhs, self.lhs)
@@ -29,11 +31,17 @@ class Rule:
 # functionality is not sufficient.
 class DeepRule(Rule):
     # pass a function that is applied to an expression when applying the rule
-    def __init__(self, func, matchType=None):
+    def __init__(self, func, matchType=None, name=None):
         self.func = func
         self.matchType = matchType
+        self.name = name
 
+    # apply rule to expression tree
     def apply(self, expr):
+        # if not Atom, pass rule recursively
+        if not expr.isa(Atom):
+            expr = expr.func(*[self.apply(arg) for arg in expr.args])
+        # if matches, apply function
         if self.matchType is None or expr.isa(self.matchType):
             return self.func(expr)
         return expr
@@ -50,7 +58,7 @@ class RuleSet:
         self.rules += list(rules)
 
     # apply all matching rules
-    def apply(self, expr, printSteps=False, repetitive=False):
+    def apply(self, expr, printSteps=True, repetitive=True):
         changed = True
         while changed:
             changed = False
@@ -59,7 +67,7 @@ class RuleSet:
                 expr = rule.apply(expr)
                 if not before == expr:
                     if printSteps:
-                        print(before)
+                        print(rule.name+": " if rule.name is not None else "", before)
                     if repetitive:
                         changed = True
         return expr
