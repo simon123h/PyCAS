@@ -6,11 +6,13 @@
 __all__ = [
     'all',
     'arithmetics',
-    'infinity'
+    'infinity',
+    'beautify'
 ]
 
 from .arithmetics import arithmeticRules as arithmetics
 from .infinity import infinityRules as infinity
+from .beautify import beautify as beautify
 
 # All rules
-all = arithmetics + infinity
+all = arithmetics + infinity + beautify

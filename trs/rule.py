@@ -11,10 +11,11 @@ from mathexpr.atom import Atom
 
 class Rule:
     # TODO: change order of args? name to front?
-    def __init__(self, lhs, rhs, name=None):
+    def __init__(self, lhs, rhs, name=None, complexity=1):
         self.name = name
         self.lhs = lhs
         self.rhs = rhs
+        self.complexity = complexity
 
     def invert(self):
         return Rule(self.rhs, self.lhs)
@@ -32,10 +33,12 @@ class Rule:
 # functionality is not sufficient.
 class DeepRule(Rule):
     # pass a function that is applied to an expression when applying the rule
-    def __init__(self, func, matchType=None, name=None):
+    def __init__(self, func, name=None, matchType=None, excludeType=None, complexity=1):
         self.func = func
-        self.matchType = matchType
         self.name = name
+        self.matchType = matchType
+        self.excludeType = excludeType
+        self.complexity = complexity
 
     # apply rule to expression tree
     def apply(self, expr):
@@ -44,7 +47,8 @@ class DeepRule(Rule):
             expr = expr.func(*[self.apply(arg) for arg in expr.args])
         # if matches, apply function
         if self.matchType is None or expr.isa(self.matchType):
-            return self.func(expr)
+            if self.excludeType is None or not expr.isa(self.excludeType):
+                return self.func(expr)
         return expr
 
 
@@ -58,8 +62,8 @@ class RuleSet:
     def add(self, *rules):
         self.rules += list(rules)
 
-    # apply all matching rules
-    def apply(self, expr, printSteps=True, repetitive=True, detectCycles=True):
+    # apply all matching rules and print steps if rules complexity is higher than printStepsMinComplexity
+    def apply(self, expr, printStepsMinComplexity=1, repetitive=True, detectCycles=True):
         changed = True
         history = []
         ruleHistory = []
@@ -78,7 +82,7 @@ class RuleSet:
                         history.append(before)
                         ruleHistory.append(rule)
                     # print rule replacement steps
-                    if printSteps:
+                    if rule.complexity >= printStepsMinComplexity:
                         print(before)
                         if rule.name is not None:
                             print(rule.name+":")

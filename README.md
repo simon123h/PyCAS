@@ -7,13 +7,9 @@ Current functionality covers Integer arithmetics only. We're still doing the
 basics here.
 
 ## Issues
-- TODO: arithmetic rules
 - TODO: general rules?
-- TODO: InfinityRules
 - TODO: elaborate Number classes, Rational, Real, Complex
 - TODO: create new node types, vector, matrix, functions
-- TODO: for Infinity and undefined, save what caused it?
-- TODO: str output with correct parentheses
 
 ## Resources
 https://en.wikipedia.org/wiki/Expression
