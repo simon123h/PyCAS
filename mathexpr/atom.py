@@ -5,6 +5,7 @@ Includes, Numerals, Variables and Wildcards
 """
 
 from .expr import Expression
+from .elementary import Div
 
 
 # abstract parent class for all atomic Expressions
@@ -20,14 +21,50 @@ class Num(Atom):
     pass
 
 
-# Integers
-class Int(Num):
+# Real numbers
+class Real(Num):
     def __init__(self, val):
         self.val = val
         super().__init__(val)
 
     def __str__(self):
         return str(self.val)
+
+
+# TODO: Rational class? Redundancy with elementary.Div?
+
+# Rational numbers
+class Rational(Div, Real):
+    def __init__(self, p, q=1):
+        self.p = p
+        self.q = q
+        super(Real, self).__init__(float(p) / float(q))
+
+    def __str__(self):
+        return super(Div, self).__str__()
+
+
+# Integers
+class Int(Rational):
+    def __init__(self, val):
+        self.val = val
+        super().__init__(val)
+
+    def __str__(self):
+        return str(self.val)
+
+
+# Constants have a special representation and tend to remain unchanged
+# TODO: allow complex constants, Constant as a child of Rational?
+class Constant(Real):
+    def __init__(self, strrep, val):
+        self.strrep = strrep
+        self.val = val
+        super(Real, self).__init__(val)
+        super(Atom, self).__init__(strrep, val)
+
+    def __str__(self):
+        return self.strrep
 
 
 # Variables
@@ -38,17 +75,6 @@ class Var(Atom):
 
     def __str__(self):
         return self.name
-
-
-# Constants have a special representation and tend to remain unchanged
-class Constant(Num):
-    def __init__(self, strrep, val):
-        self.strrep = strrep
-        self.val = val
-        super().__init__(self, strrep, val)
-
-    def __str__(self):
-        return self.strrep
 
 
 # Wildcards for pattern matching

@@ -3,7 +3,7 @@ RuleSets for elementary arithmetics
 """
 
 
-from mathexpr.atom import Wildcard, Int, Undefined
+from mathexpr.atom import Wildcard, Int, Undefined, Real
 from mathexpr.elementary import Add, Mul, Div, Pow, Sub
 from mathexpr.specialNumbers import Zero, One, Infinity
 from trs.rule import Rule, DeepRule, RuleSet
@@ -174,6 +174,70 @@ intDiv = RuleSet(
 )
 
 
+# Calculate a fraction from a real via a Stern-Brocot-Tree
+def sternBrocot(val, minError=10**-32, maxIter=10**5):
+    if val == 0:
+        return 0, 1, 0
+    isNegative = False if val > 0 else True
+    val = abs(val)
+    if val > 1:
+        pl = int(val)
+        ql = 1
+        pr = int(val) + 1
+        qr = 1
+    else:
+        pl = 0
+        ql = 1
+        pr = 1
+        qr = 0
+    error = 1
+    i = 0
+    while not (error < minError or i > maxIter):
+        pMed = pl + pr
+        qMed = ql + qr
+        med = pMed / qMed
+        if val < med:
+            pr = pMed
+            qr = qMed
+        else:
+            pl = pMed
+            ql = qMed
+        error = abs(val - med)
+        i += 1
+    if isNegative:
+        return -pMed, qMed
+    return pMed, qMed, error, i
+
+
+def toFrac(realExpr):
+    p, q, error, i = sternBrocot(realExpr.val, 10**-2, 10**3)
+    if error == 0:
+        return Div(Int(p), Int(q))
+    return realExpr
+
+
+realRules = RuleSet(
+    DeepRule(
+        lambda expr: toFrac(Int(sum([arg.val for arg in expr.args]))) if len(expr.args) and all(
+            arg.isa(Real) for arg in expr.args) else expr,
+        matchType=Add,
+        name="evaluate real addition"
+    ),
+    DeepRule(
+        lambda expr: toFrac(Int(product([arg.val for arg in expr.args]))) if len(expr.args) and all(
+            arg.isa(Real) for arg in expr.args) else expr,
+        matchType=Mul,
+        name="evaluate real multiplication"
+    ),
+    DeepRule(
+        lambda e: toFrac(Int(e.args[0].val**e.args[1].val)
+                         ) if all(arg.isa(Real) for arg in e.args) else e,
+        matchType=Pow,
+        name="evaluate real exponentiation"
+    )
+)
+
+
 # combine all to a common RuleSet
 # take care on order for good performance
-arithmeticRules = intAdd + intSub + intMul + intDiv + intPow
+arithmeticRules = realRules + intAdd + intSub + intMul + intDiv + intPow

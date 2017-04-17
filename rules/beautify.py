@@ -3,10 +3,10 @@ RuleSets for term beautification
 """
 
 
-from mathexpr.atom import Wildcard, Undefined, Num, Constant, Var, Atom
+from mathexpr.atom import Num, Constant, Var, Atom
 # from mathexpr.elementary import Add, Mul, Div, Pow, Sub
 # from mathexpr.specialNumbers import Zero, One, Infinity
-from trs.rule import Rule, DeepRule, RuleSet
+from trs.rule import DeepRule, RuleSet
 
 
 # order arguments in commutative operators

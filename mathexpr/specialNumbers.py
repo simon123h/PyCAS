@@ -4,7 +4,7 @@ a special name (e.g. constants) or just deserve a
 separate variable reference (e.g. 0, 1)
 """
 
-from .atom import Atom, Int
+from .atom import Atom, Int, Constant
 
 
 # Infinity
@@ -62,6 +62,6 @@ One = Int(1)
 Zero = Int(0)
 
 # important constants
-# pi = Constant("pi", Num(3.14159265359))
-# Phi = Constant("Phi", Num(1.61803398875))
-# e = Constant("e", Num(2.71828182846))
+pi = Constant("pi", 3.14159265359)
+Phi = Constant("Phi", 1.61803398875)
+e = Constant("e", 2.71828182846)

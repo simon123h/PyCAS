@@ -55,4 +55,4 @@ class Div(Expression):
 # Exponentiation
 class Pow(Expression):
     def __str__(self):
-        return "(" + ("^".join(["(" + arg.__str__() + ")" if arg.isa((Add, Sub, Div, Mul)) else arg.__str__() for arg in self.args])) + ")"
+        return "(" + ("^".join(["(" + arg.__str__() + ")" if arg.isa((Add, Sub, Div, Mul)) else arg.__str__() for arg in self.args])) + ")"  # noqa
